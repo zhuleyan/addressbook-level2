@@ -24,7 +24,11 @@ public class FindCommand extends Command {
     private final Set<String> keywords;
 
     public FindCommand(Set<String> keywords) {
-        this.keywords = keywords;
+        Set<String> keywordsInLowerCase = new HashSet<>();
+        for(String keyword: keywords){
+            keywordsInLowerCase.add(keyword.toLowerCase());
+        }
+        this.keywords = keywordsInLowerCase;
     }
 
     /**
@@ -49,7 +53,7 @@ public class FindCommand extends Command {
     private List<ReadOnlyPerson> getPersonsWithNameContainingAnyKeyword(Set<String> keywords) {
         final List<ReadOnlyPerson> matchedPersons = new ArrayList<>();
         for (ReadOnlyPerson person : addressBook.getAllPersons()) {
-            final Set<String> wordsInName = new HashSet<>(person.getName().getWordsInName());
+            final Set<String> wordsInName = new HashSet<>(person.getName().getWordsInNameInLowerCase());
             if (!Collections.disjoint(wordsInName, keywords)) {
                 matchedPersons.add(person);
             }
